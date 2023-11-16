@@ -1,0 +1,39 @@
+import Container from "react-bootstrap/Container";
+import Navbar from "react-bootstrap/Navbar";
+
+function NavbarHeader() {
+  return (
+    <div>
+      <nav className=" bg-slate-900">
+        <div className=" px-5 py-1 mx-auto">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center  w-72">
+              <img
+                className="w-10 h-10 object-contain"
+                src="/icons/spy.png"
+                alt="detection"
+              />
+              <a
+                className="text-gray-200 pl-2 py-2 rounded-md no-underline font-bold text-lg font-sans whitespace-nowrap"
+                href="/"
+              >
+                Deteksi Promosi Judi
+              </a>
+            </div>
+            <div className="flex  w-full justify-center">
+              <h1 className=" text-xl font-semibold text-white mr-6">check</h1>
+              <h1 className=" text-xl font-semibold text-white">statistik</h1>
+            </div>
+            <div className="block  w-72">
+              <div className="flex items-center justify-end ml-4 md:ml-6">
+                <img className="w-8 h-8" src="/icons/github.png" alt="github" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  );
+}
+
+export default NavbarHeader;

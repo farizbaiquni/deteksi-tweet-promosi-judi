@@ -1,8 +1,5 @@
 import axios from "axios";
 import { useState } from "react";
-import { Button } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import { AxiosResponse } from "axios";
 import { AxiosError } from "axios";
 
@@ -50,20 +47,17 @@ function InputTextToCheck() {
       });
   };
   return (
-    <div className="w-[700px]">
+    <div className="mx-32 w-full">
       <div className="flex flex-col">
-        <p className=" text-left ml-2 font-semibold text-lg">
-          CEK APAKAH TWEET MENGANDUNG PROMOSI JUDI{" "}
-        </p>
         <textarea
-          className="w-full px-4 
-          py-2 text-base text-gray-700 placeholder-gray-400
-           bg-white border border-gray-300 rounded-sm shadow-md
-           appearance-none focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent"
+          className="w-full appearance-none
+           rounded-sm border border-gray-400 bg-white
+           px-4 py-2 text-base text-gray-700 placeholder-gray-400
+           shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-200"
           id="comment"
           placeholder="Masukan teks tweet"
           name="comment"
-          rows={15}
+          rows={13}
           onChange={(e) => setText(e.target.value)}
           value={text}
         />
@@ -72,10 +66,9 @@ function InputTextToCheck() {
         <button
           onClick={() => checkTextPrediction()}
           type="button"
-          className="py-2 px-9 bg-slate-700
-           hover:bg-slate-900 focus:ring-slate-500
-            focus:ring-offset-slate-200 text-white 
-             transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+          className="rounded-lg bg-slate-700 px-9 py-2 text-center text-base font-semibold 
+          text-white shadow-md transition duration-200 ease-in hover:bg-slate-900 
+          focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2  focus:ring-offset-slate-200 "
         >
           Check
         </button>
