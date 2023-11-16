@@ -1,0 +1,23 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/projek-pba-18523203/node_modules
+/projek-pba-18523203/.pnp
+/projek-pba-18523203.pnp.js
+
+# testing
+/projek-pba-18523203/coverage
+
+# production
+/projek-pba-18523203/build
+
+# misc
+/projek-pba-18523203/.DS_Store
+/projek-pba-18523203/.env.local
+/projek-pba-18523203/.env.development.local
+/projek-pba-18523203/.env.test.local
+/projek-pba-18523203/.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
