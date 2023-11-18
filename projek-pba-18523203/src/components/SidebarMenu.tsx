@@ -1,4 +1,11 @@
-function SidebarMenu() {
+import { MenuFeature } from "../constants/constants";
+
+type PropsType = {
+  changeCurrentMenu: (menu: MenuFeature) => void;
+  currentMenu: MenuFeature;
+};
+
+function SidebarMenu(props: PropsType) {
   return (
     <div className="relative bg-white dark:bg-gray-800">
       <div className="flex flex-col sm:flex-row sm:justify-around">
@@ -11,10 +18,16 @@ function SidebarMenu() {
           </div>
           <nav className="mt-10 px-6 ">
             <a
-              className="my-6 flex items-center rounded-lg bg-gray-100 
-              p-2 text-gray-800 transition-colors duration-200 hover:bg-gray-100  
-              hover:text-gray-800 dark:bg-[#314525] dark:text-gray-100 
-              dark:hover:bg-gray-600 dark:hover:text-white"
+              onClick={() => {
+                props.changeCurrentMenu(MenuFeature.check);
+              }}
+              className={`my-6 flex items-center rounded-lg p-2 
+              transition-colors duration-200 hover:bg-gray-100 hover:text-gray-800  
+              dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white ${
+                props.currentMenu === MenuFeature.check
+                  ? "bg-gray-100 text-gray-800 dark:bg-[#314525]"
+                  : "text-gray-600 "
+              } `}
               href="#"
             >
               <svg
@@ -24,9 +37,9 @@ function SidebarMenu() {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="#b3b3b3"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -35,9 +48,16 @@ function SidebarMenu() {
               <span className="flex-grow text-right"></span>
             </a>
             <a
-              className="my-6 flex items-center rounded-lg p-2 text-gray-600 
+              onClick={() => {
+                props.changeCurrentMenu(MenuFeature.statistic);
+              }}
+              className={`my-6 flex items-center rounded-lg p-2 
               transition-colors duration-200 hover:bg-gray-100 hover:text-gray-800  
-              dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white "
+              dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white ${
+                props.currentMenu === MenuFeature.statistic
+                  ? "bg-gray-100 text-gray-800 dark:bg-[#314525]"
+                  : "text-gray-600 "
+              } `}
               href="#"
             >
               <svg

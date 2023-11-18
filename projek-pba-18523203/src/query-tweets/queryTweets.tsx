@@ -1,11 +1,12 @@
 import { exec } from "child_process";
 
-export function runTweetHarvest(
+export default function runTweetHarvest(
   filename: string,
   searchKeyword: string,
   limit: number,
-  authToken: string
+  authToken: string,
 ): void {
+  alert("execute");
   const command = `npx --yes tweet-harvest@latest -o "${filename}" -s "${searchKeyword}" -l ${limit} --token ${authToken}`;
 
   exec(command, (error, stdout, stderr) => {
@@ -18,15 +19,3 @@ export function runTweetHarvest(
     }
   });
 }
-
-// // main.js
-
-// import { runTweetHarvest } from './tweetHarvest';
-
-// // Example usage:
-// const filename = 'output.json';
-// const searchKeyword = 'your_search_keyword';
-// const limit = 100;
-// const authToken = 'your_twitter_auth_token';
-
-// runTweetHarvest(filename, searchKeyword, limit, authToken);

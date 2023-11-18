@@ -43,6 +43,9 @@
       "last 1 safari version"
     ]
   },
+  "browser":{
+    "child_process": false
+  },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
