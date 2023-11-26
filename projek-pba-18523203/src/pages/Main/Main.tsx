@@ -4,10 +4,11 @@ import SidebarMenu from "../../components/SidebarMenu";
 import { useState } from "react";
 import { MenuFeature } from "../../constants/constants";
 import Statistik from "../../components/Statistik";
+import UploadFileExcel from "../../components/UploadFileExcel";
 
 function Main() {
   const [currentMenu, setCurrentMenu] = useState<MenuFeature>(
-    MenuFeature.check,
+    MenuFeature.statistic,
   );
   const changeCurrentMenu = (menu: MenuFeature) => {
     setCurrentMenu(menu);
@@ -25,7 +26,10 @@ function Main() {
             {currentMenu === MenuFeature.check ? (
               <InputTextToCheck />
             ) : (
-              <Statistik />
+              <div>
+                <Statistik />
+                <UploadFileExcel />
+              </div>
             )}
           </div>
         </div>

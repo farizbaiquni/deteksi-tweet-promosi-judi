@@ -26,9 +26,9 @@ function InputTextToCheck() {
         console.log("Response:", response.data);
         let output = "";
         if (response.data.prediction === 1) {
-          output = "Predicted as fake news";
+          output = "Prediksi tweet mengandung promosi judi";
         } else {
-          output = "Predicted as not fake news";
+          output = "Prediksi tweet tidak mengandung promosi judi";
         }
         alert(output);
       })
