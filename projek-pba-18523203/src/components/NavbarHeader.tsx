@@ -6,13 +6,13 @@ type PropsType = {
 
 function NavbarHeader(props: PropsType) {
   return (
-    <nav className=" bg-[#1b3015]">
+    <nav className=" bg-[#2a4a21]">
       <div className="mx-auto max-w-7xl px-8">
         <div className="flex h-16 items-center justify-between">
           <div className=" flex items-center">
             <div className="hidden md:block">
               <div className="flex items-baseline space-x-4">
-                <p className="rounded-md px-3 py-2 font-sans text-lg font-bold text-gray-300 no-underline">
+                <p className="rounded-md px-3 py-2 font-sans text-xl font-bold text-gray-300 no-underline">
                   {props.currentMenu === MenuFeature.check
                     ? "Cek apakah tweet mengandung promosi judi"
                     : "Visualisasi statistik"}
