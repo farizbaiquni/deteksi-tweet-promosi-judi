@@ -4,24 +4,42 @@ import SidebarMenu from "../../components/SidebarMenu";
 import { useState, useEffect } from "react";
 import {
   MenuFeature,
+  RatioPredictionType,
+  ResultPredictionGroupByDateType,
   ResultPredictionType,
   StatistikMenuFeature,
 } from "../../constants/constants";
 import Statistik from "../../components/Statistik";
 import UploadFileExcel from "../../components/UploadFileExcel";
 
+import { exampleDataResultPrediction } from "../../constants/ExampleResultPreditionData";
+import { exampleDataRatioPrediction } from "../../constants/ExampleRatioPredictionData";
+import { exampleDataResultPredictionByDate } from "../../constants/ExampleRatioPredictionGroupByDateData";
+
 function Main() {
   const [currentMenu, setCurrentMenu] = useState<MenuFeature>(
-    MenuFeature.statistic,
+    MenuFeature.check,
   );
   const [displayMode, setDisplayMode] = useState<StatistikMenuFeature>(
-    StatistikMenuFeature.upload,
+    StatistikMenuFeature.statistic,
   );
   const [resultPrediction, setResultPrediction] =
-    useState<ResultPredictionType | null>(null);
+    useState<Array<ResultPredictionType> | null>(exampleDataResultPrediction);
+  const [resultPredictionGroupByDate, setresultPredictionByDate] =
+    useState<Array<ResultPredictionGroupByDateType> | null>(
+      exampleDataResultPredictionByDate,
+    );
+  const [ratioPrediction, setRatioPrediction] =
+    useState<RatioPredictionType | null>(exampleDataRatioPrediction);
 
-  const onChangeResultPrediction = (prediction: ResultPredictionType) => {
+  const onChangeResultPrediction = (
+    prediction: Array<ResultPredictionType>,
+  ) => {
     setResultPrediction(prediction);
+  };
+
+  const onChangeRasioPrediksi = (rasio: RatioPredictionType) => {
+    setRatioPrediction(rasio);
   };
 
   const changeCurrentMenu = (menu: MenuFeature) => {
@@ -40,23 +58,30 @@ function Main() {
           changeCurrentMenu={changeCurrentMenu}
           currentMenu={currentMenu}
         />
-        <div className="flex h-full w-full flex-col">
+        <div className="flex h-full w-full flex-col overflow-x-hidden">
           <NavbarHeader currentMenu={currentMenu} />
-          <div className="mt-11 flex justify-center">
-            {currentMenu === MenuFeature.check ? (
-              <InputTextToCheck />
-            ) : (
-              <div>
-                {displayMode === StatistikMenuFeature.upload ? (
-                  <UploadFileExcel
-                    onChangeResultPrediction={onChangeResultPrediction}
-                  />
-                ) : (
-                  <Statistik />
-                )}
-              </div>
-            )}
-          </div>
+          {currentMenu === MenuFeature.check ? (
+            <InputTextToCheck />
+          ) : (
+            <div className="overflow-y-auto">
+              {displayMode === StatistikMenuFeature.upload ? (
+                <UploadFileExcel
+                  onChangeResultPrediction={onChangeResultPrediction}
+                  onChangeRasioPrediksi={onChangeRasioPrediksi}
+                />
+              ) : resultPrediction &&
+                ratioPrediction &&
+                resultPredictionGroupByDate ? (
+                <Statistik
+                  resultPrediction={resultPrediction}
+                  ratioPrediction={ratioPrediction}
+                  resultPredictionGroupByDate={resultPredictionGroupByDate}
+                />
+              ) : (
+                <div></div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

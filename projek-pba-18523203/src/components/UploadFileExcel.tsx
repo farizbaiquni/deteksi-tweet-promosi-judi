@@ -1,14 +1,20 @@
 import axios from "axios";
 import { useState } from "react";
-import { AxiosResponse } from "axios";
-import { AxiosError } from "axios";
-import { ResultPredictionType } from "../constants/constants";
+import {
+  RatioPredictionType,
+  ResultPredictionGroupByDateType,
+  ResultPredictionType,
+} from "../constants/constants";
 
 type propsType = {
-  onChangeResultPrediction: (prediction: ResultPredictionType) => void;
+  onChangeResultPrediction: (prediction: Array<ResultPredictionType>) => void;
+  onChangeRasioPrediksi: (rasio: RatioPredictionType) => void;
 };
 
-function UploadFileExcel({ onChangeResultPrediction }: propsType) {
+function UploadFileExcel({
+  onChangeResultPrediction,
+  onChangeRasioPrediksi,
+}: propsType) {
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<string | null>(null);
 
@@ -20,12 +26,39 @@ function UploadFileExcel({ onChangeResultPrediction }: propsType) {
 
   const apiUrl: string = "http://127.0.0.1:5000/predict";
 
+  function groupByDate(dataArray: Array<ResultPredictionType>) {
+    const groupedData: { [date: string]: ResultPredictionGroupByDateType } = {};
+
+    dataArray.forEach((data) => {
+      const createdDate = new Date(data.created_at).toDateString();
+
+      if (!groupedData[createdDate]) {
+        groupedData[createdDate] = {
+          date: createdDate,
+          total_promosi_judi: 0,
+          total_tidak_promosi_judi: 0,
+        };
+      }
+
+      // Mengupdate nilai predictionOne dan totalPredictionTwo
+      if (data.prediction === 1) {
+        groupedData[createdDate].total_promosi_judi += 1;
+      } else {
+        groupedData[createdDate].total_tidak_promosi_judi += 1;
+      }
+    });
+
+    // Mengubah objek hasil pengelompokkan menjadi array
+    const resultArray = Object.values(groupedData);
+
+    return resultArray;
+  }
+
   const uploadFile = async () => {
     if (!file) {
       alert("Pilih file Excel terlebih dahulu.");
       return;
     }
-
     const formData = new FormData();
     formData.append("file", file);
 
@@ -35,7 +68,29 @@ function UploadFileExcel({ onChangeResultPrediction }: propsType) {
         formData,
       );
 
-      onChangeResultPrediction(response.data);
+      let totalPositif = 0;
+      let totalNegatif = 0;
+
+      response.data.result.map((data: ResultPredictionType) => {
+        if (data.prediction === 1) {
+          totalPositif += 1;
+        } else {
+          totalNegatif += 1;
+        }
+      });
+
+      const rasioPrediksi = {
+        positive_promosi_judi: totalPositif,
+        negative_promosi_judi: totalNegatif,
+      };
+
+      const resultPredictionGroupByDate = groupByDate(response.data.result);
+
+      console.log(resultPredictionGroupByDate);
+
+      onChangeRasioPrediksi(rasioPrediksi);
+
+      onChangeResultPrediction(response.data.result);
 
       console.log("Response:", response.data);
       alert(response.data);
