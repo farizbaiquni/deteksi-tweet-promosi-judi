@@ -46,9 +46,6 @@ function LineChart({
 
   const labels = resultPredictionGroupByDate.map((data) => data.date);
 
-  const rr = labels.map(() => faker.datatype.number({ min: -1000, max: 1000 }));
-  console.log(rr);
-
   const [userData, setUserData] = useState({
     labels: resultPredictionGroupByDate.map(
       (data: ResultPredictionGroupByDateType) => data.date,

@@ -12,11 +12,20 @@ type PropsType = {
 
 function BarChart({ resultPrediction, ratioPrediction }: PropsType) {
   const options = {
-    maintainAspectRatio: false,
+    // maintainAspectRatio: false,
     responsive: true,
     plugins: {
       legend: {
         display: false,
+      },
+      datalabels: {
+        color: "#000000",
+        font: {
+          size: 20,
+        },
+        formatter: (value: any, context: any) => {
+          return value;
+        },
       },
     },
   };
@@ -35,11 +44,11 @@ function BarChart({ resultPrediction, ratioPrediction }: PropsType) {
   ];
 
   const [userData, setUserData] = useState({
-    labels: ["Positif", "Negative"],
+    labels: ["Promosi Judi", "Tidak Promosi Judi"],
     datasets: [
       {
         data: data.map((data) => data.total),
-        backgroundColor: ["#b34444", "#4474b3"],
+        backgroundColor: ["#fd7f6f", "#8bd3c7"],
         borderColor: "black",
         borderWidth: 2,
       },

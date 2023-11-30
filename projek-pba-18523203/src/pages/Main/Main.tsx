@@ -21,8 +21,10 @@ function Main() {
     MenuFeature.check,
   );
   const [displayMode, setDisplayMode] = useState<StatistikMenuFeature>(
-    StatistikMenuFeature.statistic,
+    StatistikMenuFeature.upload,
   );
+
+  const [titleStatistic, setTitleStatistic] = useState<string>("");
   const [resultPrediction, setResultPrediction] =
     useState<Array<ResultPredictionType> | null>(exampleDataResultPrediction);
   const [resultPredictionGroupByDate, setresultPredictionByDate] =
@@ -32,18 +34,28 @@ function Main() {
   const [ratioPrediction, setRatioPrediction] =
     useState<RatioPredictionType | null>(exampleDataRatioPrediction);
 
-  const onChangeResultPrediction = (
+  const updateAllResultPrediction = (
     prediction: Array<ResultPredictionType>,
+    rasio: RatioPredictionType,
+    resultPredictionGroupByDate: Array<ResultPredictionGroupByDateType>,
+    title: string,
   ) => {
     setResultPrediction(prediction);
-  };
-
-  const onChangeRasioPrediksi = (rasio: RatioPredictionType) => {
     setRatioPrediction(rasio);
+    setresultPredictionByDate(resultPredictionGroupByDate);
+    setTitleStatistic(title);
   };
 
   const changeCurrentMenu = (menu: MenuFeature) => {
     setCurrentMenu(menu);
+  };
+
+  const changeDisplayMode = (mode: StatistikMenuFeature) => {
+    setDisplayMode(mode);
+  };
+
+  const resetTitleStatistic = () => {
+    setTitleStatistic("");
   };
 
   useEffect(() => {
@@ -59,15 +71,18 @@ function Main() {
           currentMenu={currentMenu}
         />
         <div className="flex h-full w-full flex-col overflow-x-hidden">
-          <NavbarHeader currentMenu={currentMenu} />
+          <NavbarHeader
+            titleStatistic={titleStatistic}
+            currentMenu={currentMenu}
+          />
           {currentMenu === MenuFeature.check ? (
             <InputTextToCheck />
           ) : (
             <div className="overflow-y-auto">
               {displayMode === StatistikMenuFeature.upload ? (
                 <UploadFileExcel
-                  onChangeResultPrediction={onChangeResultPrediction}
-                  onChangeRasioPrediksi={onChangeRasioPrediksi}
+                  changeDisplayMode={changeDisplayMode}
+                  updateAllResultPrediction={updateAllResultPrediction}
                 />
               ) : resultPrediction &&
                 ratioPrediction &&
@@ -76,6 +91,8 @@ function Main() {
                   resultPrediction={resultPrediction}
                   ratioPrediction={ratioPrediction}
                   resultPredictionGroupByDate={resultPredictionGroupByDate}
+                  changeDisplayMode={changeDisplayMode}
+                  resetTitleStatistic={resetTitleStatistic}
                 />
               ) : (
                 <div></div>
