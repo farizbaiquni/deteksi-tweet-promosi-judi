@@ -18,11 +18,11 @@ function InputTextToCheck() {
   };
 
   const checkTextPrediction = async () => {
-    setShowModalLoading(true);
     if (text.trim().length <= 10) {
       alert("Input text must be more than 10 characters");
       return;
     }
+    setShowModalLoading(true);
     const postData = {
       text: text,
     };

@@ -5,6 +5,8 @@ import {
   StatistikMenuFeature,
 } from "../constants/constants";
 import BarChart from "./statistics/BarChart";
+import { format, parseISO } from 'date-fns';
+import { id } from 'date-fns/locale';
 
 import {
   Chart,
@@ -78,6 +80,52 @@ function Statistik({
   changeDisplayMode,
   resetTitleStatistic,
 }: PropsType) {
+
+    function convertMonth(monthAbbreviation: string): string {
+      switch (monthAbbreviation.toLowerCase()) {
+          case 'jan':
+              return 'Januari';
+          case 'feb':
+              return 'Februari';
+          case 'mar':
+              return 'Maret';
+          case 'apr':
+              return 'April';
+          case 'may':
+              return 'Mei';
+          case 'jun':
+              return 'Juni';
+          case 'jul':
+              return 'Juli';
+          case 'aug':
+              return 'Agustus';
+          case 'sep':
+              return 'September';
+          case 'oct':
+              return 'Oktober';
+          case 'nov':
+              return 'November';
+          case 'dec':
+              return 'Desember';
+          default:
+              return '';
+      }
+  }
+
+
+  function convertDateFormat(originalDateString: string): string {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    
+    const dateParts = originalDateString.split(' ');
+    const day = dateParts[2];
+    const month = convertMonth(dateParts[1]);
+    const year = dateParts[5];
+
+    return `${day} ${month} ${year}`;
+  }
   return (
     <div className="flex-col px-11 pb-11 pt-3">
       <div
@@ -94,25 +142,33 @@ function Statistik({
       </div>
       <div className="flex justify-around bg-gray-300">
         <div className="my-3 flex-col items-center rounded-md border-2 border-gray-400 bg-white px-5 py-5 shadow-xl">
-          <p className="mb-3 text-center text-2xl font-semibold text-gray-600">
+          <p className="mb-3 text-center text-2xl font-bold text-gray-600">
             {ratioPrediction.positive_promosi_judi +
               ratioPrediction.negative_promosi_judi}
           </p>
-          <p className="text-center text-sm text-gray-800">Jumlah Tweets</p>
+          <p className="text-center text-sm text-gray-500 font-semibold">Jumlah Tweets</p>
         </div>
         <div className="my-3 flex-col items-center rounded-md border-2 border-gray-400 bg-white px-5 py-5 shadow-xl">
-          <p className="mb-3 text-center text-2xl font-semibold text-gray-600">
-            {ratioPrediction.positive_promosi_judi}
-          </p>
-          <p className="text-center text-sm text-gray-800">
+          <div className="flex items-center justify-center mb-3">
+            <p className="text-center text-2xl font-bold text-gray-600 mr-2">{ratioPrediction.positive_promosi_judi}</p>
+            <p className="text-center text-lg font-semibold text-gray-400">
+              {"(" + ((ratioPrediction.positive_promosi_judi /( ratioPrediction.positive_promosi_judi +
+                ratioPrediction.negative_promosi_judi)) * 100).toFixed(2) + "%" + ")"}
+            </p>
+          </div>
+          <p className="text-center text-sm text-gray-500 font-semibold">
             Jumlah Tweets Promosi Judi
           </p>
         </div>
         <div className="my-3 flex-col items-center rounded-md border-2 border-gray-400 bg-white px-5 py-5 shadow-xl">
-          <p className="mb-3 text-center text-2xl font-semibold text-gray-600">
-            {ratioPrediction.negative_promosi_judi}
-          </p>
-          <p className="text-center text-sm text-gray-800">
+          <div className="flex items-center justify-center mb-3">
+            <p className="text-center text-2xl font-bold text-gray-600 mr-2">{ratioPrediction.negative_promosi_judi}</p>
+            <p className="text-center text-lg font-semibold text-gray-400">
+              {"(" + ((ratioPrediction.negative_promosi_judi /( ratioPrediction.positive_promosi_judi +
+                ratioPrediction.negative_promosi_judi)) * 100).toFixed(2) + "%" + ")"}
+            </p>
+          </div>
+          <p className="text-center text-sm text-gray-500 font-semibold">
             Jumlah Tweets Tidak Promosi Judi
           </p>
         </div>
@@ -183,7 +239,7 @@ function Statistik({
                     {tweet.full_text}
                   </td>
                   <td className="dark:border-dark-5 whitespace-nowrap border-2 border-gray-300 p-2">
-                    20 November 2023
+                    {convertDateFormat(tweet.created_at)}
                   </td>
                   <td className="dark:border-dark-5 whitespace-nowrap border-2 border-gray-300 p-2">
                     {tweet.prediction === 1 ? "Promosi" : "Tidak"}

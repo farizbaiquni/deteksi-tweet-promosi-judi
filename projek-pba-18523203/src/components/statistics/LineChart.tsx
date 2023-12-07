@@ -27,21 +27,6 @@ function LineChart({
     },
     stacked: false,
     plugins: {},
-    scales: {
-      y: {
-        type: "linear" as const,
-        display: true,
-        position: "left" as const,
-      },
-      y1: {
-        type: "linear" as const,
-        display: true,
-        position: "right" as const,
-        grid: {
-          drawOnChartArea: false,
-        },
-      },
-    },
   };
 
   const labels = resultPredictionGroupByDate.map((data) => data.date);
@@ -52,23 +37,21 @@ function LineChart({
     ),
     datasets: [
       {
-        label: "Dataset 1",
+        label: "Promosi Judi",
         data: resultPredictionGroupByDate.map(
           (data: ResultPredictionGroupByDateType) => data.total_promosi_judi,
         ),
         borderColor: "rgb(189, 59, 36)",
         backgroundColor: "rgba(189, 59, 36)",
-        yAxisID: "y",
       },
       {
-        label: "Dataset 2",
+        label: "Tidak Promosi Judi",
         data: resultPredictionGroupByDate.map(
           (data: ResultPredictionGroupByDateType) =>
             data.total_tidak_promosi_judi,
         ),
         borderColor: "rgb(107, 144, 255)",
         backgroundColor: "rgba(107, 144, 255)",
-        yAxisID: "y1",
       },
     ],
   });

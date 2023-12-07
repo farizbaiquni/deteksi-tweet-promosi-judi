@@ -31,7 +31,7 @@ function UploadFileExcel({
     setFile(selectedFile);
   };
 
-  const apiUrl: string = "http://127.0.0.1:5000/predict";
+  const apiUrl: string = "http://127.0.0.1:5000/analisis";
 
   function groupByDate(dataArray: Array<ResultPredictionType>) {
     const groupedData: { [date: string]: ResultPredictionGroupByDateType } = {};
@@ -75,7 +75,7 @@ function UploadFileExcel({
 
     try {
       const response = await axios
-        .post("http://127.0.0.1:5000/analisis", formData)
+        .post(apiUrl, formData)
         .then((response: AxiosResponse) => {
           setTimeout(() => {
             let totalPositif = 0;
@@ -109,6 +109,7 @@ function UploadFileExcel({
         });
     } catch (error) {
       setShowModalLoading(false);
+      console.log(error)
       alert(error);
     }
   };
@@ -134,11 +135,19 @@ function UploadFileExcel({
           <div className="flex w-full items-center justify-center">
             <label className="group flex h-60 w-full flex-col rounded-lg border-4 border-dashed border-gray-400 p-10 text-center">
               <div className="flex h-full w-full flex-col items-center justify-center text-center  ">
-                <img
-                  className=" mb-5 h-16 w-16 object-contain"
-                  src="/icons/excel.png"
-                  alt="freepik image"
-                />
+               <div className="flex items-center justify-center">
+                  <img
+                    className=" mb-5 h-16 w-16 object-contain"
+                    src="/icons/excel.png"
+                    alt="freepik image"
+                  />
+                  <p className=" text-slate-4 00 text-lg mx-5">or</p>
+                  <img
+                    className=" mb-5 h-16 w-16 object-contain"
+                    src="/icons/csv.png"
+                    alt="freepik image"
+                  />
+               </div>
                 <p className=" mb-3 font-semibold">
                   {file !== null ? file.name : ""}
                 </p>
@@ -155,14 +164,14 @@ function UploadFileExcel({
                 type="file"
                 className="hidden"
                 onChange={handleFileChange}
-                accept=".xlsx, .xls"
+                accept=".csv, .xlsx, .xls"
               />
             </label>
           </div>
         </div>
 
         <p className="text-sm text-gray-500">
-          <span>File type: xlsx, xls</span>
+          <span>File type: xlsx, xls, csv</span>
         </p>
         <div>
           <button
