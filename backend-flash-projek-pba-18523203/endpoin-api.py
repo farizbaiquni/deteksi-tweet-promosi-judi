@@ -1,4 +1,4 @@
-import pandas
+import pandas as pd
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import joblib
@@ -7,6 +7,7 @@ import re
 from werkzeug.utils import secure_filename
 import io
 import openpyxl
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -40,7 +41,7 @@ def pre_processing(text):
     return result
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'xlsx', 'xls'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'xlsx', 'xls', 'csv'}
 
 # Memuat model dari file
 loaded_model = joblib.load("model_prediksi_tweet_promosi_judi.joblib")
@@ -70,8 +71,22 @@ def analisis():
         file = request.files['file']
         
         if file and allowed_file(file.filename):
-            file_content = file.read()
-            wb = openpyxl.load_workbook(io.BytesIO(file_content))
+            
+            if file.filename.rsplit('.', 1)[1].lower() == 'csv':
+                # Membaca file CSV dari BytesIO
+                csv_content = file.read()
+                df = pd.read_csv(BytesIO(csv_content))
+
+                # Menyimpan DataFrame ke dalam file Excel
+                excel_content = BytesIO()
+                df.to_excel(excel_content, index=False)
+                excel_content.seek(0)
+                
+                # Membaca workbook dari BytesIO
+                wb = openpyxl.load_workbook(excel_content)  
+            else:
+                file_content = file.read()
+                wb = openpyxl.load_workbook(io.BytesIO(file_content))
             
             # Mendapatkan nama sheet pertama
             sheet_name = wb.sheetnames[0]
@@ -92,18 +107,16 @@ def analisis():
                 prediction_value = int(aaa)
                 row_data = list(row) + [prediction_value]  
                 data.append(dict(zip(header, row_data)))
+                
+            # Membalik urutan data    
+            data = data[::-1]
     
             # Mengembalikan JSON
             return jsonify({'result': data}), 200
         
         else:
             return jsonify({'error': 'File tidak diizinkan'}), 400
-    
-        # text = request.json["text"]
-        # text = pre_processing(text)
-        # predicted_category = loaded_model.predict([text])[0]
-        # result = {"prediction": int(predicted_category)}
-        # return jsonify(result), 200
+        
 
 
 if __name__ == "__main__":
