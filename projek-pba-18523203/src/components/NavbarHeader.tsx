@@ -16,7 +16,7 @@ function NavbarHeader(props: PropsType) {
                 <p className="rounded-md px-3 py-2 font-sans text-xl font-bold capitalize text-gray-300 no-underline">
                   {props.currentMenu === MenuFeature.check
                     ? "Cek apakah tweet mengandung promosi judi"
-                    : "Visualisasi " + props.titleStatistic}
+                    : "Upload File Tweets " + props.titleStatistic}
                 </p>
               </div>
             </div>

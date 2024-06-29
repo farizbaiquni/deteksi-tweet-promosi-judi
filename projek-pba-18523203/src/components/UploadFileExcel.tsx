@@ -13,6 +13,8 @@ type propsType = {
     rasio: RatioPredictionType,
     resultPredictionGroupByDate: Array<ResultPredictionGroupByDateType>,
     title: string,
+    resultPredictionPromosi: Array<ResultPredictionType>,
+    resultPredictionTidakPromosi: Array<ResultPredictionType>,
   ) => void;
   changeDisplayMode: (mode: StatistikMenuFeature) => void;
 };
@@ -38,6 +40,12 @@ function UploadFileExcel({
 
     dataArray.forEach((data) => {
       const createdDate = new Date(data.created_at).toDateString();
+      
+      if(createdDate === "Tue Dec 05 2023"){
+        console.log("======")
+        console.log(data.full_text)
+
+      }
 
       if (!groupedData[createdDate]) {
         groupedData[createdDate] = {
@@ -57,6 +65,7 @@ function UploadFileExcel({
 
     // Mengubah objek hasil pengelompokkan menjadi array
     const resultArray = Object.values(groupedData);
+    console.log(resultArray)
 
     return resultArray;
   }
@@ -97,11 +106,21 @@ function UploadFileExcel({
               response.data.result,
             );
 
+            const resultPredictionPromosi = response.data.result.filter((tweet: ResultPredictionType) => {
+              return tweet.prediction.toString() === "1";
+            })
+
+            const resultPredictionTidakPromosi = response.data.result.filter((tweet: ResultPredictionType) => {
+              return tweet.prediction.toString() === "1";
+            })
+
             updateAllResultPrediction(
               response.data.result,
               rasioPrediksi,
               resultPredictionGroupByDate,
               title,
+              resultPredictionPromosi,
+              resultPredictionTidakPromosi
             );
             setShowModalLoading(false);
             changeDisplayMode(StatistikMenuFeature.statistic);

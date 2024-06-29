@@ -34,3 +34,10 @@ export type RatioPredictionType = {
   positive_promosi_judi: number;
   negative_promosi_judi: number;
 };
+
+
+export enum StatistikFilterPrediction {
+  keduanya,
+  promosi_judi,
+  tidak_promosi_judi
+}

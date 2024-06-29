@@ -1,10 +1,9 @@
 import pandas as pd
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib
 from nltk.corpus import stopwords
 import re
-from werkzeug.utils import secure_filename
 import io
 import openpyxl
 from io import BytesIO
@@ -116,8 +115,7 @@ def analisis():
         
         else:
             return jsonify({'error': 'File tidak diizinkan'}), 400
-        
-
+   
 
 if __name__ == "__main__":
     app.run(debug=True)

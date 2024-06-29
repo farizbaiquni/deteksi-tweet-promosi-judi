@@ -37,6 +37,7 @@ import {
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import PieChart from "./statistics/PieChart";
 import LineChart from "./statistics/LineChart";
+import Tabel from "./statistics/Tabel";
 
 Chart.register(
   ArcElement,
@@ -71,6 +72,8 @@ type PropsType = {
   resultPredictionGroupByDate: Array<ResultPredictionGroupByDateType>;
   changeDisplayMode: (menu: StatistikMenuFeature) => void;
   resetTitleStatistic: () => void;
+  resultPredictionPromosi: Array<ResultPredictionType>,
+  resultPredictionTidakPromosi: Array<ResultPredictionType>,
 };
 
 function Statistik({
@@ -79,6 +82,8 @@ function Statistik({
   resultPredictionGroupByDate,
   changeDisplayMode,
   resetTitleStatistic,
+  resultPredictionPromosi,
+  resultPredictionTidakPromosi
 }: PropsType) {
 
     function convertMonth(monthAbbreviation: string): string {
@@ -207,50 +212,11 @@ function Statistik({
           />
         </div>
       </div>
-      <div className="mt-10 w-full flex-col bg-white shadow-lg shadow-gray-300">
-        <p className=" mb-7 pt-10 text-center text-2xl font-bold text-gray-500">
-          Daftar Hasil Prediksi Tweet
-        </p>
-        <div className="mx-5 h-[500px] overflow-y-auto">
-          <table className="table w-full rounded-lg border-2 border-gray-300 bg-white p-4 shadow">
-            <thead>
-              <tr>
-                <th className="dark:border-dark-5 whitespace-nowrap border-2 border-gray-300 p-4 font-semibold text-gray-700">
-                  No
-                </th>
-                <th className="dark:border-dark-5 whitespace-nowrap border-2 border-gray-300 p-4 font-semibold text-gray-700">
-                  Teks Tweet
-                </th>
-                <th className="dark:border-dark-5 whitespace-nowrap border-2 border-gray-300 p-4 font-semibold text-gray-700">
-                  Tanggal
-                </th>
-                <th className="dark:border-dark-5 whitespace-nowrap border-2 border-gray-300 p-4 font-semibold text-gray-700">
-                  Prediksi
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {resultPrediction.map((tweet: ResultPredictionType, index) => (
-                <tr className="text-gray-700">
-                  <td className="dark:border-dark-5 border-2 border-gray-300 p-2 text-center">
-                    {index + 1}
-                  </td>
-                  <td className="dark:border-dark-5 border-2 border-gray-300 p-2">
-                    {tweet.full_text}
-                  </td>
-                  <td className="dark:border-dark-5 whitespace-nowrap border-2 border-gray-300 p-2">
-                    {convertDateFormat(tweet.created_at)}
-                  </td>
-                  <td className="dark:border-dark-5 whitespace-nowrap border-2 border-gray-300 p-2">
-                    {tweet.prediction === 1 ? "Promosi" : "Tidak"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className=" h-10"></div>
-        </div>
-      </div>
+      <Tabel 
+        resultPrediction={resultPrediction} 
+        resultPredictionPromosi={resultPredictionPromosi} 
+        resultPredictionTidakPromosi={resultPredictionTidakPromosi}
+      />
     </div>
   );
 }

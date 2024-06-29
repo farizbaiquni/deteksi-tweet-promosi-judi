@@ -25,8 +25,12 @@ function Main() {
   );
 
   const [titleStatistic, setTitleStatistic] = useState<string>("");
+  
   const [resultPrediction, setResultPrediction] =
     useState<Array<ResultPredictionType> | null>(exampleDataResultPrediction);
+  const [resultPredictionPromosi, setResultPredictionPromosi] = useState<Array<ResultPredictionType>>([]);
+  const [resultPredictionTidakPromosi, setResultPredictionTidakPromosi] = useState<Array<ResultPredictionType>>([]);
+
   const [resultPredictionGroupByDate, setresultPredictionByDate] =
     useState<Array<ResultPredictionGroupByDateType> | null>(
       exampleDataResultPredictionByDate,
@@ -39,11 +43,15 @@ function Main() {
     rasio: RatioPredictionType,
     resultPredictionGroupByDate: Array<ResultPredictionGroupByDateType>,
     title: string,
+    resultPredictionPromosi: Array<ResultPredictionType>,
+    resultPredictionTidakPromosi: Array<ResultPredictionType>,
   ) => {
     setResultPrediction(prediction);
     setRatioPrediction(rasio);
     setresultPredictionByDate(resultPredictionGroupByDate);
     setTitleStatistic(title);
+    setResultPredictionPromosi(resultPredictionPromosi);
+    setResultPredictionTidakPromosi(resultPredictionTidakPromosi);
   };
 
   const changeCurrentMenu = (menu: MenuFeature) => {
@@ -57,11 +65,6 @@ function Main() {
   const resetTitleStatistic = () => {
     setTitleStatistic("");
   };
-
-  useEffect(() => {
-    console.log("=== NEW DATA ===");
-    console.log(resultPrediction);
-  }, [resultPrediction]);
 
   return (
     <div className="h-screen bg-[#F4F2EC]">
@@ -93,6 +96,8 @@ function Main() {
                   resultPredictionGroupByDate={resultPredictionGroupByDate}
                   changeDisplayMode={changeDisplayMode}
                   resetTitleStatistic={resetTitleStatistic}
+                  resultPredictionPromosi={resultPredictionPromosi}
+                  resultPredictionTidakPromosi={resultPredictionTidakPromosi}
                 />
               ) : (
                 <div></div>
